@@ -5,7 +5,6 @@ const getData = async () => {
       throw new Error("Erreur de réponse du serveur");
     }
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Une erreur s'est produite", error);
@@ -16,9 +15,8 @@ const getData = async () => {
 async function main() {
   try {
     const data = await getData();
-    const filters = await getDataFilter();
     displayData(data);
-    displayData(filters);
+    displayCategs(data);
   } catch (error) {
     console.error("Une erreur s'est produite", error);
   }
@@ -26,9 +24,21 @@ async function main() {
 
 function displayData(data) {
   const sectionGallery = document.getElementById("gallery");
+  let categoryId = [];
+  let categories = [];
 
   for (let elem of data) {
+    if (!categoryId.includes(elem.category.id)) {
+      categoryId.push(elem.category.id);
+      categories.push(elem.category.name);
+    }
     const figure = document.createElement("figure");
+    figure.setAttribute("id", `figure_${elem.id}`);
+    figure.setAttribute("class", "figure");
+
+    // Ajouter l'attribut data-cat
+    figure.setAttribute("data-cat", elem.category.id);
+
     const imageElement = document.createElement("img");
     imageElement.src = elem.imageUrl;
     const nomElement = document.createElement("figcaption");
@@ -38,91 +48,82 @@ function displayData(data) {
     figure.appendChild(nomElement);
     sectionGallery.appendChild(figure);
   }
-  //console.log(data);
 }
 
-// Filtres //
-const getDataFilter = async () => {
-  try {
-    const response = await fetch("http://localhost:5678/api/categories");
-    if (!response.ok) {
-      throw new Error("Erreur de réponse du serveur");
-    }
-    const dataF = await response.json();
-    //console.log(dataF);
-    return dataF;
-  } catch (error) {
-    console.error("Une erreur s'est produite", error);
-    throw error;
+function displayCategs(data) {
+  const categs = document.getElementById("categs");
+
+  // Créer le bouton "Tous"
+  const allBtn = document.createElement("button");
+  allBtn.setAttribute("class", "cat");
+  allBtn.textContent = "Tous";
+  allBtn.addEventListener("click", () => {
+    showAllFigures();
+  });
+  categs.appendChild(allBtn);
+
+  // Créer un bouton pour chaque catégorie unique
+  const categoryId = data.map((elem) => elem.category.id);
+  const uniqueCategoryId = [...new Set(categoryId)];
+
+  for (let id of uniqueCategoryId) {
+    const category = data.find((elem) => elem.category.id === id);
+    const catBtn = document.createElement("button");
+    catBtn.setAttribute("class", "cat");
+    catBtn.setAttribute("data-cat", id);
+    catBtn.textContent = category.category.name;
+    catBtn.addEventListener("click", () => {
+      showFiguresByCat(id);
+    });
+    categs.appendChild(catBtn);
   }
-};
+}
+
+function showAllFigures() {
+  const figures = document.querySelectorAll(".figure");
+  figures.forEach((fig) => {
+    fig.style.display = "block";
+  });
+}
+
+function showFiguresByCat(catId) {
+  const figures = document.querySelectorAll(".figure");
+  figures.forEach((fig) => {
+    if (fig.getAttribute("data-cat") == catId || catId === "all") {
+      fig.style.display = "block";
+    } else {
+      fig.style.display = "none";
+    }
+  });
+}
+
+function sortByCat(event) {
+  const all = document.getElementsByClassName("cat");
+  if (event.target.id !== "0") {
+    for (let elem of all) {
+      if (elem.dataset.cat !== event.target.id) {
+        elem.classList.add("hid");
+      } else {
+        if (elem.classList.contains("hid")) {
+          elem.classList.remove("hid");
+        }
+      }
+    }
+  } else {
+    for (let elem of all) {
+      if (elem.classList.contains("hid")) {
+        elem.classList.remove("hid");
+      }
+    }
+  }
+}
 
 main();
 
 // Button //
-const boutonFilter = document.querySelector(".filter-objets");
-boutonFilter.addEventListener("click", async () => {
-  try {
-    const data = await getData();
-    const objetsFilter = data.filter((elem) => elem.categoryId === 1);
-    const sectionGallery = document.getElementById("gallery");
-    sectionGallery.innerHTML = ""; // Vider le contenu de la sectionGallery
-    displayData(objetsFilter); // Afficher uniquement les éléments filtrés
-  } catch (error) {
-    console.error("Une erreur s'est produite", error);
-  }
-});
-
-const boutonObjet = document.querySelector(".filter-objets");
-boutonFilter.addEventListener("click", async () => {
-  try {
-    const data = await getData();
-    const objetsFilter = data.filter((elem) => elem.categoryId === 1);
-    //console.log(objetsFilter);
-    const sectionGallery = document.getElementById("gallery");
-    sectionGallery.innerHTML = ""; // Vider le contenu de la sectionGallery
-    displayData(objetsFilter); // Afficher uniquement les éléments filtrés
-  } catch (error) {
-    console.error("Une erreur s'est produite", error);
-  }
-});
-const boutonApp = document.querySelector(".filter-appartements");
-boutonApp.addEventListener("click", async () => {
-  try {
-    const data = await getData();
-    const appFilter = data.filter((elem) => elem.categoryId === 2);
-    //console.log(appFilter);
-    const sectionGallery = document.getElementById("gallery");
-    sectionGallery.innerHTML = ""; // Vider le contenu de la sectionGallery
-    displayData(appFilter); // Afficher uniquement les éléments filtrés
-  } catch (error) {
-    console.error("Une erreur s'est produite", error);
-  }
-});
-const boutonHotel = document.querySelector(".filter-hotelsrestaurants");
-console.log(boutonHotel);
-boutonHotel.addEventListener("click", async () => {
-  try {
-    const data = await getData();
-    const hotelFilter = data.filter((elem) => elem.categoryId === 3);
-    //console.log(hotelFilter);
-    const sectionGallery = document.getElementById("gallery");
-    sectionGallery.innerHTML = ""; // Vider le contenu de la sectionGallery
-    displayData(hotelFilter); // Afficher uniquement les éléments filtrés
-  } catch (error) {
-    console.error("Une erreur s'est produite", error);
-  }
-});
-const boutonTous = document.querySelector(".filter-tous");
-boutonTous.addEventListener("click", async () => {
-  const sectionGallery = document.getElementById("gallery");
-  const data = await getData();
-  sectionGallery.innerHTML = "";
-  displayData(data);
-});
 
 // login//
-const log = document.querySelector("#log");
+/*const log = document.querySelector("#log");
 const login = document.querySelector("#login");
 const sections = document.getElementsByTagName("section");
 
@@ -185,4 +186,4 @@ submit.addEventListener("submit", async (e) => {
       throw new Error("Adresse e-mail ou mot de passe invalide");
     }
   } catch (error) {}
-});
+});*/
