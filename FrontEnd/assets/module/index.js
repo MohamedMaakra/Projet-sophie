@@ -51,7 +51,7 @@ function displayData(data) {
 }
 
 function displayCategs(data) {
-  const categs = document.getElementById("categs");
+  const categs = document.getElementById("categories");
 
   // Créer le bouton "Tous"
   const allBtn = document.createElement("button");
@@ -120,70 +120,22 @@ function sortByCat(event) {
 
 main();
 
-// Button //
-
 // login//
-/*const log = document.querySelector("#log");
-const login = document.querySelector("#login");
-const sections = document.getElementsByTagName("section");
-
-let isModified = false;
-let initialStyles = []; // Stocker les styles initiaux des sections
-
-// Stocker les styles initiaux des sections
-for (let i = 0; i < sections.length; i++) {
-  initialStyles.push(sections[i].style.display);
+const loginLink = document.querySelector("#log");
+const token = localStorage.getItem("token");
+if (token) {
+  loginLink.textContent = "logout";
+  loginLink.href = "#";
 }
-console.log(initialStyles);
-log.addEventListener("click", (e) => {
-  if (!isModified) {
-    // Si la page n'a pas été modifiée
-    for (let i = 0; i < sections.length; i++) {
-      if (i === 3) {
-        break;
-      }
-      const section = sections[i];
-      section.style.display = "none";
-      //console.log(section);
-    }
-    login.style.display = null;
 
-    isModified = true; // Changer l'état de la page à modifié
-    //console.log(initialStyles);
+loginLink.addEventListener("click", () => {
+  event.preventDefault();
+  if (token) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    loginLink.textContent = "login";
+    loginLink.href = "http://127.0.0.1:5500/FrontEnd/login.html";
   } else {
-    // Si la page a déjà été modifiée
-    for (let i = 0; i < sections.length; i++) {
-      const section = sections[i];
-      section.style.display = initialStyles[i]; // Restaurer le style initial
-    }
-    login.style.display = "none"; // Cacher le login
-
-    isModified = false; // Changer l'état de la page à non modifié
+    window.location.href = "http://127.0.0.1:5500/FrontEnd/login.html";
   }
 });
-
-let inputEmail = document.querySelector("#email1").value;
-let inputPass = document.querySelector("#password").value;
-const submit = document.querySelector("submit1");
-
-submit.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  console.log(submit);
-  const user = {
-    email: inputEmail,
-    password: inputPass,
-  };
-  console.log(user);
-
-  try {
-    const response = await fetch("http://localhost:5678/api/users/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ user }),
-    });
-
-    if (!response.ok) {
-      throw new Error("Adresse e-mail ou mot de passe invalide");
-    }
-  } catch (error) {}
-});*/

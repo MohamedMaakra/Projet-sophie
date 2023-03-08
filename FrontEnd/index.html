@@ -20,7 +20,11 @@
         <ul>
           <li>projets</li>
           <li>contact</li>
-          <li id="log">login</li>
+          <li>
+            <a href="http://127.0.0.1:5500/FrontEnd/login.html" id="log"
+              >login</a
+            >
+          </li>
           <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
         </ul>
       </nav>
@@ -52,7 +56,7 @@
       <section id="portfolio">
         <h2>Mes Projets</h2>
         <div id="Filtre"></div>
-        <div id="categs" class="categs"></div>
+        <div id="categories" class="categories"></div>
         <div id="gallery" class="gallery"></div>
       </section>
       <section id="contact">
@@ -68,22 +72,6 @@
           <input type="submit" value="Envoyer" />
         </form>
       </section>
-      <section id="login" style="display: none">
-        <h2>login</h2>
-        <form action="#" method="post">
-          <label for="email">E-mail</label>
-          <input type="email" id="email1" name="email1" />
-          <label for="Motdepasse">Mot de passe</label>
-          <input
-            type="password"
-            id="password"
-            required="password"
-            name="password"
-          />
-          <input type="submit" value="Se connecter" id="submit1" />
-          <a href="">Mot de passe oublié</a>
-        </form>
-      </section>
     </main>
 
     <footer>
@@ -93,6 +81,7 @@
         </ul>
       </nav>
     </footer>
-    <script src="./assets/module/index.js"></script>
+    <script type="module" src="./assets/module/index.js"></script>
+    <script src="./assets/module/log.js"></script>
   </body>
 </html>
