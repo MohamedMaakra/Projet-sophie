@@ -1,4 +1,3 @@
-const form = document.querySelector("#login1");
 const submitBtn = document.querySelector("#submit");
 
 submitBtn.addEventListener("click", async (event) => {

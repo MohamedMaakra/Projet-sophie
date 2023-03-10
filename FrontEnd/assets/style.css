@@ -313,3 +313,56 @@ button:hover {
 #login a {
   text-align: center;
 }
+
+#introduction .icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  margin-right: 11px;
+}
+
+.icon {
+  margin-right: 11px;
+  margin-left: 31px;
+}
+
+.display {
+  display: none;
+}
+.modif {
+  display: flex;
+}
+#modif1 {
+  margin-left: 57px;
+  margin-top: 15px;
+}
+#modif2 {
+  margin-bottom: 19px;
+}
+#port {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
+#barre {
+  width: 100%;
+  height: 59px;
+  margin: auto;
+  background-color: black;
+}
+#barre p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  gap: 21px;
+  padding-top: 10px;
+}
+#barre img {
+  background: white;
+  margin-left: -8px;
+}
+#barre button {
+  color: black;
+}

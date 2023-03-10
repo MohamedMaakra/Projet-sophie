@@ -123,19 +123,38 @@ main();
 // login//
 const loginLink = document.querySelector("#log");
 const token = localStorage.getItem("token");
-if (token) {
-  loginLink.textContent = "logout";
-  loginLink.href = "#";
-}
 
-loginLink.addEventListener("click", () => {
+loginLink.addEventListener("click", (event) => {
   event.preventDefault();
   if (token) {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     loginLink.textContent = "login";
     loginLink.href = "http://127.0.0.1:5500/FrontEnd/login.html";
+    hideElementsWithClass();
   } else {
     window.location.href = "http://127.0.0.1:5500/FrontEnd/login.html";
   }
 });
+
+if (token) {
+  loginLink.textContent = "logout";
+  loginLink.href = "#";
+  showElementsWithClass();
+} else {
+  hideElementsWithClass();
+}
+
+function showElementsWithClass() {
+  const elements = document.querySelectorAll(".display");
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].style.display = "block";
+  }
+}
+
+function hideElementsWithClass() {
+  const elements = document.querySelectorAll(".display");
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].style.display = "none";
+  }
+}
