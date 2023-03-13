@@ -19,6 +19,7 @@ submitBtn.addEventListener("click", async (event) => {
     });
 
     if (!response.ok) {
+      alert("Erreur dans l’identifiant ou le mot de passe");
       throw new Error("Adresse e-mail ou mot de passe invalide");
     }
 
