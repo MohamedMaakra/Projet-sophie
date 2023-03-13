@@ -7,8 +7,8 @@ submitBtn.addEventListener("click", async (event) => {
   const inputPass = document.querySelector("#password").value;
 
   const user = {
-    email: inputEmail,
-    password: inputPass,
+    email: verifyMail(inputEmail),
+    password: verifyPass(inputPass),
   };
 
   try {
@@ -36,3 +36,17 @@ submitBtn.addEventListener("click", async (event) => {
   }
   console.log(user);
 });
+
+function verifyMail(inputEmail) {
+  if ("" === inputEmail || null === inputEmail) {
+    return "";
+  }
+  return inputEmail;
+}
+
+function verifyPass(inputPass) {
+  if ("" === inputPass || null === inputPass) {
+    return "";
+  }
+  return inputPass;
+}

@@ -64,16 +64,20 @@ function displayCategs(data) {
 
   // Créer un bouton pour chaque catégorie unique
   const categoryId = data.map((elem) => elem.category.id);
-  const uniqueCategoryId = [...new Set(categoryId)];
+  const uniqueCategoryId = categoryId.filter(
+    (id, index) => categoryId.indexOf(id) === index
+  );
 
-  for (let id of uniqueCategoryId) {
-    const category = data.find((elem) => elem.category.id === id);
+  for (let i in uniqueCategoryId) {
+    const category = data.find(
+      (elem) => elem.category.id === uniqueCategoryId[i]
+    );
     const catBtn = document.createElement("button");
     catBtn.setAttribute("class", "cat");
-    catBtn.setAttribute("data-cat", id);
+    catBtn.setAttribute("data-cat", uniqueCategoryId[i]);
     catBtn.textContent = category.category.name;
     catBtn.addEventListener("click", () => {
-      showFiguresByCat(id);
+      showFiguresByCat(uniqueCategoryId[i]);
     });
     categs.appendChild(catBtn);
   }
@@ -117,33 +121,31 @@ function sortByCat(event) {
     }
   }
 }
+window.addEventListener("DOMContentLoaded", () => {
+  main();
+  const loginLink = document.querySelector("#log");
+  const token = localStorage.getItem("token");
 
-main();
-
-// login//
-const loginLink = document.querySelector("#log");
-const token = localStorage.getItem("token");
-
-loginLink.addEventListener("click", (event) => {
-  event.preventDefault();
+  loginLink.addEventListener("click", (event) => {
+    event.preventDefault();
+    if (token) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("userId");
+      loginLink.textContent = "login";
+      loginLink.href = "http://127.0.0.1:5500/FrontEnd/login.html";
+      hideElementsWithClass();
+    } else {
+      window.location.href = "http://127.0.0.1:5500/FrontEnd/login.html";
+    }
+  });
   if (token) {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-    loginLink.textContent = "login";
-    loginLink.href = "http://127.0.0.1:5500/FrontEnd/login.html";
-    hideElementsWithClass();
+    loginLink.textContent = "logout";
+    loginLink.href = "#";
+    showElementsWithClass();
   } else {
-    window.location.href = "http://127.0.0.1:5500/FrontEnd/login.html";
+    hideElementsWithClass();
   }
 });
-
-if (token) {
-  loginLink.textContent = "logout";
-  loginLink.href = "#";
-  showElementsWithClass();
-} else {
-  hideElementsWithClass();
-}
 
 function showElementsWithClass() {
   const elements = document.querySelectorAll(".display");
