@@ -442,3 +442,31 @@ button:hover {
   border: 1px solid #b3b3b3;
   margin-top: 47px;
 }
+
+.icon-container {
+  position: relative;
+}
+
+.icon-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.icon-container img:first-child {
+  width: 17px;
+}
+.icon-container img:last-child {
+  z-index: 1;
+  width: 9px;
+  padding: 4px;
+}
+
+.modal-figure {
+  position: relative;
+}
+
+.icon-container {
+  position: absolute;
+  top: 5px;
+  right: 23px;
+}

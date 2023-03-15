@@ -210,11 +210,25 @@ function displayModalData(data) {
 
     const imageElement = document.createElement("img");
     imageElement.src = elem.imageUrl;
+
+    const iconContainer = document.createElement("div");
+    iconContainer.classList.add("icon-container");
+
+    const carre = document.createElement("img");
+    carre.src = "./assets/icons/Rectangle.png";
+    iconContainer.appendChild(carre);
+
+    const delet = document.createElement("img");
+    delet.src = "./assets/icons/delete.png";
+    iconContainer.appendChild(delet);
+
     const nomElement = document.createElement("figcaption");
     nomElement.textContent = "édite";
 
     figure.appendChild(imageElement);
     figure.appendChild(nomElement);
+    figure.appendChild(iconContainer);
+
     modalContent.appendChild(figure);
   }
 }
