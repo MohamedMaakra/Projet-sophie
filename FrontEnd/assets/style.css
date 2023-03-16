@@ -368,14 +368,19 @@ button:hover {
 }
 /*modal*/
 
-.js-modal-close {
+#btn {
+  display: flex;
+  justify-content: space-between;
+}
+.btn {
   border: none;
-  text-align: end;
-  width: 95%;
   padding-top: 32px;
 }
-.js-modal-close:hover {
+.btn:hover {
   background-color: white;
+}
+.js-modal-back {
+  visibility: hidden;
 }
 .mod-h2 {
   font-family: "Work Sans";
@@ -436,7 +441,7 @@ button:hover {
   color: #d65353;
   margin: 23px;
 }
-#border {
+.border {
   width: 420px;
   margin: auto;
   border: 1px solid #b3b3b3;
@@ -469,4 +474,43 @@ button:hover {
   position: absolute;
   top: 5px;
   right: 23px;
+}
+
+#box-image {
+  width: 420px;
+  height: 169px;
+  background-color: #e8f1f7;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#box-image img {
+  width: 56px;
+  height: 46px;
+}
+
+#ajouts form {
+  display: flex;
+  flex-direction: column;
+  margin: 30px 105px;
+}
+#ajouts label {
+  margin-bottom: 10px;
+}
+#ajouts input {
+  margin-bottom: 21px;
+  height: 51px;
+}
+#ajouts select {
+  height: 51px;
+}
+.vald {
+  width: 237px;
+  margin: auto;
+  margin-top: 32px;
+  background: #a7a7a7;
+  border: none;
+  color: white;
 }

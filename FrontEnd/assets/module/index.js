@@ -18,6 +18,7 @@ async function main() {
     displayData(data);
     displayCategs(data);
     displayModalData(data);
+    populateCategories(data);
   } catch (error) {
     console.error("Une erreur s'est produite", error);
   }
@@ -53,6 +54,7 @@ function displayData(data) {
 
 function displayCategs(data) {
   const categs = document.getElementById("categories");
+  const selectCategs = document.getElementById("modal-cat");
 
   // Créer le bouton "Tous"
   const allBtn = document.createElement("button");
@@ -63,7 +65,7 @@ function displayCategs(data) {
   });
   categs.appendChild(allBtn);
 
-  // Créer un bouton pour chaque catégorie unique
+  // Créer un bouton et une option pour chaque catégorie unique
   const categoryId = data.map((elem) => elem.category.id);
   const uniqueCategoryId = categoryId.filter(
     (id, index) => categoryId.indexOf(id) === index
@@ -73,6 +75,8 @@ function displayCategs(data) {
     const category = data.find(
       (elem) => elem.category.id === uniqueCategoryId[i]
     );
+
+    // Créer un bouton pour chaque catégorie unique
     const catBtn = document.createElement("button");
     catBtn.setAttribute("class", "cat");
     catBtn.setAttribute("data-cat", uniqueCategoryId[i]);
@@ -81,6 +85,12 @@ function displayCategs(data) {
       showFiguresByCat(uniqueCategoryId[i]);
     });
     categs.appendChild(catBtn);
+
+    // Créer une option pour chaque catégorie unique et l'ajouter au select avec l'id "modal-cat"
+    const option = document.createElement("option");
+    option.text = category.category.name;
+    option.value = uniqueCategoryId[i];
+    selectCategs.add(option);
   }
 }
 
@@ -222,6 +232,21 @@ function displayModalData(data) {
     delet.src = "./assets/icons/delete.png";
     iconContainer.appendChild(delet);
 
+    // Ajout du gestionnaire d'événements pour la suppression
+    delet.addEventListener("click", function () {
+      // Récupération de l'identifiant de l'élément à supprimer
+      const idToDelete = elem.id;
+
+      // Appel de la fonction deleteData pour supprimer l'élément
+      deleteData(idToDelete);
+
+      // Récupération de l'élément figure parent de l'icône de suppression
+      const parentFigure = this.parentNode.parentNode;
+
+      // Suppression de l'élément figure du DOM
+      parentFigure.remove();
+    });
+
     const nomElement = document.createElement("figcaption");
     nomElement.textContent = "édite";
 
@@ -232,3 +257,62 @@ function displayModalData(data) {
     modalContent.appendChild(figure);
   }
 }
+
+async function deleteData(id) {
+  try {
+    const response = await fetch(`http://localhost:5678/api/works/${id}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      throw new Error("Erreur de réponse du serveur");
+    }
+    const data = await response.json();
+    console.log(data);
+    // Actualiser la galerie et la liste des catégories
+    const newData = await getData();
+    displayData(newData);
+    displayCategs(newData);
+  } catch (error) {
+    console.error("Une erreur s'est produite", error);
+    throw error;
+  }
+}
+
+const ajoutBtn = document.querySelector(".ajout");
+console.log(ajoutBtn);
+const back = document.querySelector(".js-modal-back");
+
+ajoutBtn.addEventListener("click", () => {
+  const modGallery = document.getElementById("modal-gallery");
+  const modAjout = document.getElementById("ajouts");
+  modGallery.style.display = "none";
+  modAjout.style.display = null;
+  back.style.visibility = "visible";
+});
+
+back.addEventListener("click", () => {
+  const modGallery = document.getElementById("modal-gallery");
+  const modAjout = document.getElementById("ajouts");
+  modGallery.style.display = null;
+  modAjout.style.display = "none";
+  back.style.visibility = "hidden";
+});
+
+document.querySelector(".vald").addEventListener("click", () => {
+  document.getElementById("file").click();
+});
+
+const input = document.getElementById("file");
+const preview = document.getElementById("preview");
+
+input.addEventListener("change", function () {
+  const file = input.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function () {
+    preview.src = reader.result;
+    preview.style.display = "block";
+  };
+
+  reader.readAsDataURL(file);
+});

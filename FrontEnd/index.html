@@ -78,15 +78,14 @@
         <div id="port">
           <h2>Mes Projets</h2>
           <p class="modif display">
-            <img
-              src="./assets/icons/ecrire .png"
-              alt="edit"
-              class="icon"
-            />modifier
+            <img src="./assets/icons/ecrire .png" alt="edit" class="icon" /><a
+              href="#modal1"
+              class="js-modal"
+            >
+              modifier</a
+            >
           </p>
         </div>
-        <a href="#modal1" class="js-modal"> ouvrir modal</a>
-
         <aside
           id="modal1"
           class="modal"
@@ -95,20 +94,49 @@
           style="display: none"
         >
           <div class="modal-wrapper js-modal-stop">
-            <button class="js-modal-close">
-              <img src="./assets/icons/Vector.png" />
-            </button>
+            <div id="btn">
+              <button class="js-modal-back btn">
+                <img src="./assets/icons/Arrow_Back.png" />
+              </button>
+              <button class="js-modal-close btn">
+                <img src="./assets/icons/Vector.png" />
+              </button>
+            </div>
             <div id="modal-gallery" class="">
               <h2 class="mod-h2">gallery photo</h2>
               <div id="mod-gallery">
                 <div id="mod-gallery" class="gallery-mod"></div>
               </div>
-              <div id="border"></div>
+              <div class="border"></div>
               <button class="ajout">Ajouter une photo</button>
               <p>supprimer la gallerie</p>
             </div>
-            <div id="ajouts" style="display: none">
+            <div id="ajouts" class="ajouts" style="display: none">
               <h2 class="mod-h2">Ajout photo</h2>
+
+              <form>
+                <div id="box-image">
+                  <img src="./assets/icons/image.png" id="preview" />
+                  <input
+                    type="file"
+                    id="file"
+                    accept="image/jpg, image/png"
+                    style="display: none"
+                  />
+
+                  <button class="vald">+ Ajouter photo</button>
+                  <p>jpg, png : 4mo max</p>
+                </div>
+                <div class="image"></div>
+                <label for="name">Titre</label>
+                <input type="text" />
+                <label for="">categories</label>
+                <select name="cat" id="modal-cat">
+                  <option value="">--Please choose an option--</option>
+                </select>
+                <div class="border"></div>
+                <button class="vald">Valider</button>
+              </form>
             </div>
           </div>
         </aside>
