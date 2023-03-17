@@ -316,3 +316,59 @@ input.addEventListener("change", function () {
 
   reader.readAsDataURL(file);
 });
+
+const getMaxId = async () => {
+  try {
+    const data = await getData();
+    let maxId = 0;
+    data.forEach((item) => {
+      if (item.id > maxId) {
+        maxId = item.id;
+      }
+    });
+    return maxId;
+  } catch (error) {
+    console.error("Une erreur s'est produite", error);
+    throw error;
+  }
+};
+
+const myForm = document.querySelector("form");
+const categorySelect = document.querySelector("#modal-cat");
+const titleInput = document.querySelector('input[type="text"]');
+const imgInput = document.querySelectorAll("img");
+
+myForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const lastId = await getMaxId();
+  const newId = lastId + 1;
+
+  const token = "votre-jeton-d-authentification";
+
+  const formData = new FormData();
+  formData.append("Id", newId);
+  formData.append("title", titleInput.value);
+  formData.append("imageUrl", imgInput.value);
+  formData.append("categoryId", categorySelect.value);
+  formData.append("userId", localStorage.getItem("userId"));
+  formData.append("category[id]", categorySelect.value);
+  formData.append(
+    "category[name]",
+    categorySelect.options[categorySelect.selectedIndex].text
+  );
+
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "http://localhost:5678/api/works");
+  xhr.setRequestHeader("Authorization", `Bearer ${token}`); // inclure le jeton d'authentification dans l'en-tête
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      console.log("Réponse du serveur: " + xhr.responseText);
+    } else {
+      console.log("Une erreur est survenue: " + xhr.status);
+    }
+  };
+  xhr.send(formData);
+  console.log("Données transmises au serveur : ");
+  console.log(formData);
+});
