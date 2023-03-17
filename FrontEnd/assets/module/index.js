@@ -18,7 +18,6 @@ async function main() {
     displayData(data);
     displayCategs(data);
     displayModalData(data);
-    populateCategories(data);
   } catch (error) {
     console.error("Une erreur s'est produite", error);
   }
@@ -259,9 +258,13 @@ function displayModalData(data) {
 }
 
 async function deleteData(id) {
+  const token = localStorage.getItem("token");
   try {
     const response = await fetch(`http://localhost:5678/api/works/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (!response.ok) {
       throw new Error("Erreur de réponse du serveur");
@@ -279,7 +282,7 @@ async function deleteData(id) {
 }
 
 const ajoutBtn = document.querySelector(".ajout");
-console.log(ajoutBtn);
+
 const back = document.querySelector(".js-modal-back");
 
 ajoutBtn.addEventListener("click", () => {
@@ -344,7 +347,7 @@ myForm.addEventListener("submit", async (event) => {
   const lastId = await getMaxId();
   const newId = lastId + 1;
 
-  const token = "votre-jeton-d-authentification";
+  const token = localStorage.getItem("token");
 
   const formData = new FormData();
   formData.append("Id", newId);
@@ -358,17 +361,24 @@ myForm.addEventListener("submit", async (event) => {
     categorySelect.options[categorySelect.selectedIndex].text
   );
 
-  const xhr = new XMLHttpRequest();
-  xhr.open("POST", "http://localhost:5678/api/works");
-  xhr.setRequestHeader("Authorization", `Bearer ${token}`); // inclure le jeton d'authentification dans l'en-tête
-  xhr.onload = function () {
-    if (xhr.status === 200) {
-      console.log("Réponse du serveur: " + xhr.responseText);
-    } else {
-      console.log("Une erreur est survenue: " + xhr.status);
-    }
-  };
-  xhr.send(formData);
-  console.log("Données transmises au serveur : ");
-  console.log(formData);
+  fetch("http://localhost:5678/api/works", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.text();
+      } else {
+        throw new Error("Une erreur est survenue: " + response.status);
+      }
+    })
+    .then((data) => {
+      console.log("Réponse du serveur: " + data);
+    })
+    .catch((error) => {
+      console.error("Erreur lors de l'envoi de la requête:", error);
+    });
 });
