@@ -339,7 +339,7 @@ const getMaxId = async () => {
 const myForm = document.querySelector("form");
 const categorySelect = document.querySelector("#modal-cat");
 const titleInput = document.querySelector('input[type="text"]');
-const imgInput = document.querySelectorAll("img");
+const imgInput = document.querySelector('input[type="file"]');
 
 myForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -352,14 +352,12 @@ myForm.addEventListener("submit", async (event) => {
   const formData = new FormData();
   formData.append("Id", newId);
   formData.append("title", titleInput.value);
-  formData.append("imageUrl", imgInput.value);
-  formData.append("categoryId", categorySelect.value);
-  formData.append("userId", localStorage.getItem("userId"));
-  formData.append("category[id]", categorySelect.value);
-  formData.append(
-    "category[name]",
-    categorySelect.options[categorySelect.selectedIndex].text
-  );
+  formData.append("category", categorySelect.value);
+  formData.append("image", imgInput.files[0]); // Ajout du fichier à envoyer dans le formulaire
+
+  for (const [key, value] of formData.entries()) {
+    console.log(`Clé : ${key}, Valeur : ${value}`);
+  }
 
   fetch("http://localhost:5678/api/works", {
     method: "POST",
