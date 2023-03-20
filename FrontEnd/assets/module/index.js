@@ -190,9 +190,14 @@ document.querySelectorAll(".js-modal").forEach((a) => {
   a.addEventListener("click", openModal);
 });
 
-const closeModal = function (e) {
+function resetModal() {
+  const modalForm = document.querySelector("form");
+  modalForm.reset();
+  const preview = document.getElementById("preview");
+  preview.src = "./assets/icons/image.png";
+}
+const closeModal = function () {
   if (modal === null) return;
-  e.preventDefault();
   modal.style.display = "none";
   modal.setAttribute("aria-hidden", "true");
   modal.removeEventListener("click", closeModal);
@@ -202,9 +207,10 @@ const closeModal = function (e) {
   modal
     .querySelector(".js-modal-stop")
     .removeEventListener("click", stopPropagation);
-
+  resetModal();
   modal = null;
 };
+
 const stopPropagation = function (e) {
   e.stopPropagation();
 };
@@ -336,6 +342,8 @@ const getMaxId = async () => {
   }
 };
 
+//POST //
+
 const myForm = document.querySelector("form");
 const categorySelect = document.querySelector("#modal-cat");
 const titleInput = document.querySelector('input[type="text"]');
@@ -375,6 +383,7 @@ myForm.addEventListener("submit", async (event) => {
     })
     .then((data) => {
       console.log("Réponse du serveur: " + data);
+      closeModal();
     })
     .catch((error) => {
       console.error("Erreur lors de l'envoi de la requête:", error);
