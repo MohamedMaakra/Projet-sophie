@@ -7,8 +7,8 @@ submitBtn.addEventListener("click", async (event) => {
   const inputPass = document.querySelector("#password").value;
 
   const user = {
-    email: inputEmail,
-    password: inputPass,
+    email: verifyMail(inputEmail),
+    password: verifyPass(inputPass),
   };
 
   try {
@@ -30,9 +30,23 @@ submitBtn.addEventListener("click", async (event) => {
     localStorage.setItem("token", token);
 
     console.log(token, id);
-    window.location.href = "http://127.0.0.1:5500/FrontEnd/index.html";
+    window.location.href = "./index.html";
   } catch (error) {
     console.error(error);
   }
   console.log(user);
 });
+
+function verifyMail(inputEmail) {
+  if ("" === inputEmail || null === inputEmail) {
+    return "";
+  }
+  return inputEmail;
+}
+
+function verifyPass(inputPass) {
+  if ("" === inputPass || null === inputPass) {
+    return "";
+  }
+  return inputPass;
+}
