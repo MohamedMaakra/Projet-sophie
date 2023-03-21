@@ -25,12 +25,10 @@
       <h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
       <nav>
         <ul>
-          <li>projets</li>
-          <li>contact</li>
+          <li><a href="#portfolio"> projets</a></li>
+          <li><a href="#contact"> contact</a></li>
           <li>
-            <a href="http://127.0.0.1:5500/FrontEnd/login.html" id="log"
-              >login</a
-            >
+            <a href="#" id="log">login</a>
           </li>
           <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
         </ul>
@@ -41,20 +39,20 @@
         <figure>
           <img src="./assets/images/sophie-bluel.png" alt="" />
           <p id="modif1" class="modif display">
-            <img
-              src="./assets/icons/ecrire .png"
-              alt="edit"
-              class="icon"
-            />modifier
+            <img src="./assets/icons/ecrire .png" alt="edit" class="icon" /><a
+              href="#modal1"
+              class="js-modal"
+              >modifier</a
+            >
           </p>
         </figure>
         <article>
           <p id="modif2" class="modif display">
-            <img
-              src="./assets/icons/ecrire .png"
-              alt="edit"
-              class="icon"
-            />modifier
+            <img src="./assets/icons/ecrire .png" alt="edit" class="icon" /><a
+              href="#modal1"
+              class="js-modal"
+              >modifier</a
+            >
           </p>
           <h2>Designer d'espace</h2>
           <p>
@@ -116,9 +114,15 @@
 
               <form>
                 <div id="box-image">
-                  <img src="./assets/icons/image.png" id="preview" />
-                  <input type="file" id="file" accept="image/jpg, image/png" />
-                  <button class="vald">+ Ajouter photo</button>
+                  <img src="./assets/icons/picture.png" id="preview" />
+
+                  <input
+                    type="file"
+                    id="file"
+                    accept="image/jpg, image/png"
+                    style="display: none"
+                  />
+                  <label for="file" class="ajout-mdl">+ Ajouter photo</label>
                   <p>jpg, png : 4mo max</p>
                 </div>
                 <div class="image"></div>

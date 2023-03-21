@@ -30,7 +30,7 @@ submitBtn.addEventListener("click", async (event) => {
     localStorage.setItem("token", token);
 
     console.log(token, id);
-    window.location.href = "http://127.0.0.1:5500/FrontEnd/index.html";
+    window.location.href = "./index.html";
   } catch (error) {
     console.error(error);
   }

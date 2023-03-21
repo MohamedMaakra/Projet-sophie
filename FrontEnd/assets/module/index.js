@@ -1,3 +1,8 @@
+/**
+ *  permet de récupérer des données à partir d'une API qui effectue une requête avec fetch et renvoie une promesse résolue avec les données JSON récupérées.
+ * @returns
+ */
+
 const getData = async () => {
   try {
     const response = await fetch("http://localhost:5678/api/works");
@@ -11,7 +16,9 @@ const getData = async () => {
     throw error;
   }
 };
-
+/**
+ elle attend la promesse de getDate pour ensuite  appeler d'autre fonction avec comme parametre les données de getData 
+ */
 async function main() {
   try {
     const data = await getData();
@@ -22,10 +29,12 @@ async function main() {
     console.error("Une erreur s'est produite", error);
   }
 }
-
+/**
+ * cette focntion et ultiliser pour afficher les données dans un section HTML
+ */
 function displayData(data) {
   const sectionGallery = document.getElementById("gallery");
-  let categoryId = [];
+  let categoryId = []; //stocke les identifiants et les noms de catégorie uniques des éléments de données fournis.
   let categories = [];
 
   for (let elem of data) {
@@ -33,24 +42,35 @@ function displayData(data) {
       categoryId.push(elem.category.id);
       categories.push(elem.category.name);
     }
-    const figure = document.createElement("figure");
-    figure.setAttribute("id", `figure_${elem.id}`);
-    figure.setAttribute("class", "figure");
-
-    // Ajouter l'attribut data-cat
-    figure.setAttribute("data-cat", elem.category.id);
-
-    const imageElement = document.createElement("img");
-    imageElement.src = elem.imageUrl;
-    const nomElement = document.createElement("figcaption");
-    nomElement.textContent = elem.title;
-
-    figure.appendChild(imageElement);
-    figure.appendChild(nomElement);
-    sectionGallery.appendChild(figure);
+    displayFigure(elem, sectionGallery);
   }
 }
+/**
+ * Cette fonction  est utilisée pour afficher les données dans une section HTML .
+ * @param {*} elem
+ * @param {*} sectionGallery
+ */
+function displayFigure(elem, sectionGallery) {
+  const figure = document.createElement("figure");
+  figure.setAttribute("id", `figure_${elem.id}`);
+  figure.setAttribute("class", "figure");
 
+  // Ajouter l'attribut data-cat
+  figure.setAttribute("data-cat", elem.categoryId);
+
+  const imageElement = document.createElement("img");
+  imageElement.src = elem.imageUrl;
+  const nomElement = document.createElement("figcaption");
+  nomElement.textContent = elem.title;
+
+  figure.appendChild(imageElement);
+  figure.appendChild(nomElement);
+  sectionGallery.appendChild(figure);
+}
+/**
+ *
+ * @param {*} data
+ */
 function displayCategs(data) {
   const categs = document.getElementById("categories");
   const selectCategs = document.getElementById("modal-cat");
@@ -134,7 +154,7 @@ function sortByCat(event) {
 window.addEventListener("DOMContentLoaded", () => {
   main();
   const loginLink = document.querySelector("#log");
-  const token = localStorage.getItem("token");
+  let token = localStorage.getItem("token");
 
   loginLink.addEventListener("click", (event) => {
     event.preventDefault();
@@ -142,10 +162,11 @@ window.addEventListener("DOMContentLoaded", () => {
       localStorage.removeItem("token");
       localStorage.removeItem("userId");
       loginLink.textContent = "login";
-      loginLink.href = "http://127.0.0.1:5500/FrontEnd/login.html";
+      loginLink.href = "./login.html";
+      token = false;
       hideElementsWithClass();
     } else {
-      window.location.href = "http://127.0.0.1:5500/FrontEnd/login.html";
+      window.location.href = "./login.html";
     }
   });
   if (token) {
@@ -173,6 +194,15 @@ function hideElementsWithClass() {
 //modal//
 let modal = null;
 
+const back = document.querySelector(".js-modal-back");
+
+back.addEventListener("click", () => {
+  const modGallery = document.getElementById("modal-gallery");
+  const modAjout = document.getElementById("ajouts");
+  modGallery.style.display = null;
+  modAjout.style.display = "none";
+  back.style.visibility = "hidden";
+});
 const openModal = function (e, data) {
   e.preventDefault();
   const target = document.querySelector(e.target.getAttribute("href"));
@@ -194,10 +224,12 @@ function resetModal() {
   const modalForm = document.querySelector("form");
   modalForm.reset();
   const preview = document.getElementById("preview");
-  preview.src = "./assets/icons/image.png";
+  preview.src = "./assets/icons/picture.png";
 }
+
 const closeModal = function () {
   if (modal === null) return;
+  back.click();
   modal.style.display = "none";
   modal.setAttribute("aria-hidden", "true");
   modal.removeEventListener("click", closeModal);
@@ -244,12 +276,6 @@ function displayModalData(data) {
 
       // Appel de la fonction deleteData pour supprimer l'élément
       deleteData(idToDelete);
-
-      // Récupération de l'élément figure parent de l'icône de suppression
-      const parentFigure = this.parentNode.parentNode;
-
-      // Suppression de l'élément figure du DOM
-      parentFigure.remove();
     });
 
     const nomElement = document.createElement("figcaption");
@@ -275,12 +301,9 @@ async function deleteData(id) {
     if (!response.ok) {
       throw new Error("Erreur de réponse du serveur");
     }
-    const data = await response.json();
-    console.log(data);
-    // Actualiser la galerie et la liste des catégories
-    const newData = await getData();
-    displayData(newData);
-    displayCategs(newData);
+
+    document.getElementById("modal-figure_" + id).remove();
+    document.getElementById("figure_" + id).remove();
   } catch (error) {
     console.error("Une erreur s'est produite", error);
     throw error;
@@ -289,26 +312,12 @@ async function deleteData(id) {
 
 const ajoutBtn = document.querySelector(".ajout");
 
-const back = document.querySelector(".js-modal-back");
-
 ajoutBtn.addEventListener("click", () => {
   const modGallery = document.getElementById("modal-gallery");
   const modAjout = document.getElementById("ajouts");
   modGallery.style.display = "none";
   modAjout.style.display = null;
   back.style.visibility = "visible";
-});
-
-back.addEventListener("click", () => {
-  const modGallery = document.getElementById("modal-gallery");
-  const modAjout = document.getElementById("ajouts");
-  modGallery.style.display = null;
-  modAjout.style.display = "none";
-  back.style.visibility = "hidden";
-});
-
-document.querySelector(".vald").addEventListener("click", () => {
-  document.getElementById("file").click();
 });
 
 const input = document.getElementById("file");
@@ -376,7 +385,7 @@ myForm.addEventListener("submit", async (event) => {
   })
     .then((response) => {
       if (response.ok) {
-        return response.text();
+        return response.json();
       } else {
         throw new Error("Une erreur est survenue: " + response.status);
       }
@@ -384,6 +393,8 @@ myForm.addEventListener("submit", async (event) => {
     .then((data) => {
       console.log("Réponse du serveur: " + data);
       closeModal();
+      const sectionGallery = document.getElementById("gallery");
+      displayFigure(data, sectionGallery);
     })
     .catch((error) => {
       console.error("Erreur lors de l'envoi de la requête:", error);
