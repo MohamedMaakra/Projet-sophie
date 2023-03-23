@@ -68,11 +68,14 @@ function displayFigure(elem, sectionGallery) {
   sectionGallery.appendChild(figure);
 }
 /**
- *
- * @param {*} data
+ * La fonction displayCategs crée des boutons et des options pour chaque catégorie unique présente dans les données, et les ajoute à la section "categories" du HTML, ainsi qu'au select avec l'id "modal-cat".
+ * @param {array} data - les données contenant les informations sur les figures
  */
 function displayCategs(data) {
+  // Récupère la section "categories" du HTML
   const categs = document.getElementById("categories");
+
+  // Récupère le select avec l'id "modal-cat"
   const selectCategs = document.getElementById("modal-cat");
 
   // Créer le bouton "Tous"
@@ -82,6 +85,7 @@ function displayCategs(data) {
   allBtn.addEventListener("click", () => {
     showAllFigures();
   });
+  // Ajoute le bouton "Tous" à la section "categories"
   categs.appendChild(allBtn);
 
   // Créer un bouton et une option pour chaque catégorie unique
@@ -90,7 +94,9 @@ function displayCategs(data) {
     (id, index) => categoryId.indexOf(id) === index
   );
 
+  // Parcourt chaque catégorie unique et crée un bouton et une option correspondants
   for (let i in uniqueCategoryId) {
+    // Récupère les informations sur la catégorie
     const category = data.find(
       (elem) => elem.category.id === uniqueCategoryId[i]
     );
@@ -103,6 +109,7 @@ function displayCategs(data) {
     catBtn.addEventListener("click", () => {
       showFiguresByCat(uniqueCategoryId[i]);
     });
+    // Ajoute le bouton à la section "categories"
     categs.appendChild(catBtn);
 
     // Créer une option pour chaque catégorie unique et l'ajouter au select avec l'id "modal-cat"
@@ -113,15 +120,26 @@ function displayCategs(data) {
   }
 }
 
+/**
+ * La fonction showAllFigures affiche toutes les figures en modifiant la valeur de leur propriété CSS "display" à "block".
+ */
 function showAllFigures() {
+  // Récupère toutes les figures
   const figures = document.querySelectorAll(".figure");
+  // Parcourt chaque figure et change sa propriété CSS "display" à "block" pour l'afficher
   figures.forEach((fig) => {
     fig.style.display = "block";
   });
 }
 
+/**
+ * La fonction showFiguresByCat affiche les figures correspondant à la catégorie spécifiée en modifiant la valeur de leur propriété CSS "display" à "block".
+ * @param {string} catId - l'identifiant de la catégorie à afficher
+ */
 function showFiguresByCat(catId) {
+  // Récupère toutes les figures
   const figures = document.querySelectorAll(".figure");
+  // Parcourt chaque figure et change sa propriété CSS "display" en fonction de son attribut "data-cat"
   figures.forEach((fig) => {
     if (fig.getAttribute("data-cat") == catId || catId === "all") {
       fig.style.display = "block";
@@ -131,19 +149,27 @@ function showFiguresByCat(catId) {
   });
 }
 
+// Cette fonction prend un événement en argument (normalement, un événement de clic sur un élément HTML).
 function sortByCat(event) {
+  // On sélectionne tous les éléments HTML ayant la classe "cat" et on les met dans un tableau.
   const all = document.getElementsByClassName("cat");
+
+  // Si l'élément qui a déclenché l'événement de clic a un ID différent de "0"
   if (event.target.id !== "0") {
+    // ...on boucle sur tous les éléments de la liste...
     for (let elem of all) {
+      // ...et si l'élément ne correspond pas à la catégorie de l'élément cliqué, on lui ajoute la classe "hid" pour le masquer.
       if (elem.dataset.cat !== event.target.id) {
         elem.classList.add("hid");
       } else {
+        // Sinon, si l'élément correspond bien à la catégorie de l'élément cliqué et s'il a déjà la classe "hid", on la supprime pour l'afficher à nouveau.
         if (elem.classList.contains("hid")) {
           elem.classList.remove("hid");
         }
       }
     }
   } else {
+    // Si l'élément cliqué a l'ID "0", on affiche tous les éléments en supprimant la classe "hid" pour chacun d'eux.
     for (let elem of all) {
       if (elem.classList.contains("hid")) {
         elem.classList.remove("hid");
@@ -151,6 +177,7 @@ function sortByCat(event) {
     }
   }
 }
+
 window.addEventListener("DOMContentLoaded", () => {
   main();
   const loginLink = document.querySelector("#log");
@@ -178,6 +205,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// Cette fonction sélectionne tous les éléments HTML ayant la classe "display" et les affiche en utilisant la propriété CSS "display".
 function showElementsWithClass() {
   const elements = document.querySelectorAll(".display");
   for (let i = 0; i < elements.length; i++) {
@@ -185,12 +213,14 @@ function showElementsWithClass() {
   }
 }
 
+// Cette fonction sélectionne tous les éléments HTML ayant la classe "display" et les masque en utilisant la propriété CSS "display".
 function hideElementsWithClass() {
   const elements = document.querySelectorAll(".display");
   for (let i = 0; i < elements.length; i++) {
     elements[i].style.display = "none";
   }
 }
+
 //modal//
 let modal = null;
 
@@ -203,11 +233,12 @@ back.addEventListener("click", () => {
   modAjout.style.display = "none";
   back.style.visibility = "hidden";
 });
+// Cette fonction est utilisée pour ouvrir une modal lorsqu'un lien est cliqué.
 const openModal = function (e, data) {
   e.preventDefault();
   const target = document.querySelector(e.target.getAttribute("href"));
   target.style.display = null;
-  target.removeAttribute("aria-hidden");
+  target.removeAttribute("aria-hidden"); // On supprime l'attribut "aria-hidden" pour indiquer que la modal est visible.
   modal = target;
   modal.addEventListener("click", closeModal);
   modal.querySelector(".js-modal-close").addEventListener("click", closeModal);
@@ -220,6 +251,7 @@ document.querySelectorAll(".js-modal").forEach((a) => {
   a.addEventListener("click", openModal);
 });
 
+// Cette fonction est utilisée pour réinitialiser les valeurs des champs du formulaire dans une modal.
 function resetModal() {
   const modalForm = document.querySelector("form");
   modalForm.reset();
@@ -227,6 +259,7 @@ function resetModal() {
   preview.src = "./assets/icons/picture.png";
 }
 
+// Cette fonction est utilisée pour fermer une modal ouverte.
 const closeModal = function () {
   if (modal === null) return;
   back.click();
@@ -247,6 +280,7 @@ const stopPropagation = function (e) {
   e.stopPropagation();
 };
 
+// Cette fonction est utilisée pour afficher les données passées en paramètre dans une modal.
 function displayModalData(data) {
   const modalContent = document.querySelector(".gallery-mod");
 
