@@ -322,7 +322,10 @@ function displayModalData(data) {
     modalContent.appendChild(figure);
   }
 }
-
+/**
+ *  Cette fonction asynchrone supprime les données d'un élément dans l'API.
+ * @param {*} id L'identifiant de l'élément à supprimer.
+ */
 async function deleteData(id) {
   const token = localStorage.getItem("token");
   try {
@@ -356,7 +359,9 @@ ajoutBtn.addEventListener("click", () => {
 
 const input = document.getElementById("file");
 const preview = document.getElementById("preview");
-
+/**
+ * Cette fonction écoute les changements d'un élément input de type "file" et met à jour un élément img avec l'aperçu de l'image sélectionnée.
+ */
 input.addEventListener("change", function () {
   const file = input.files[0];
   const reader = new FileReader();
@@ -392,6 +397,10 @@ const categorySelect = document.querySelector("#modal-cat");
 const titleInput = document.querySelector('input[type="text"]');
 const imgInput = document.querySelector('input[type="file"]');
 
+/**
+ * Cette fonction écoute la soumission du formulaire et envoie une requête POST contenant les données saisies dans le formulaire, y compris un fichier image, pour créer un nouvel élément de la galerie.
+ 
+ */
 myForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -400,6 +409,7 @@ myForm.addEventListener("submit", async (event) => {
 
   const token = localStorage.getItem("token");
 
+  // Créer une instance de FormData pour stocker les données du formulaire, y compris le fichier image
   const formData = new FormData();
   formData.append("Id", newId);
   formData.append("title", titleInput.value);
