@@ -403,6 +403,7 @@ const imgInput = document.querySelector('input[type="file"]');
  */
 myForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+  verify();
 
   const lastId = await getMaxId();
   const newId = lastId + 1;
@@ -435,12 +436,27 @@ myForm.addEventListener("submit", async (event) => {
       }
     })
     .then((data) => {
-      console.log("Réponse du serveur: " + data);
+      console.log(data);
       closeModal();
       const sectionGallery = document.getElementById("gallery");
       displayFigure(data, sectionGallery);
+      displayModalData([data]);
     })
     .catch((error) => {
       console.error("Erreur lors de l'envoi de la requête:", error);
     });
 });
+function verify() {
+  const inputImg = document.getElementById("file");
+  const inputTitre = document.getElementById("titre");
+  const inputCat = document.getElementById("modal-cat");
+  if (
+    inputImg.value === "" ||
+    inputTitre.value === "" ||
+    inputCat.value === ""
+  ) {
+    document.getElementById("error").textContent = "Il faut remplir les champs";
+
+    return false;
+  }
+}

@@ -6,6 +6,14 @@ submitBtn.addEventListener("click", async (event) => {
   const inputEmail = document.querySelector("#email1").value;
   const inputPass = document.querySelector("#password").value;
 
+  let email = verifyMail(inputEmail);
+  let pass = verifyPass(inputPass);
+  if ("" === email || "" === pass) {
+    document.getElementById("error").textContent = "Il faut remplir les champs";
+
+    return false;
+  }
+
   const user = {
     email: verifyMail(inputEmail),
     password: verifyPass(inputPass),
