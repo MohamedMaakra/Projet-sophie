@@ -240,11 +240,8 @@ const openModal = function (e, data) {
   target.style.display = null;
   target.removeAttribute("aria-hidden"); // On supprime l'attribut "aria-hidden" pour indiquer que la modal est visible.
   modal = target;
-  modal.addEventListener("click", closeModal);
+
   modal.querySelector(".js-modal-close").addEventListener("click", closeModal);
-  modal
-    .querySelector(".js-modal-stop")
-    .addEventListener("click", stopPropagation);
 };
 
 document.querySelectorAll(".js-modal").forEach((a) => {
@@ -257,6 +254,8 @@ function resetModal() {
   modalForm.reset();
   const preview = document.getElementById("preview");
   preview.src = "./assets/icons/picture.png";
+  const err = document.getElementById("error");
+  err.textContent = "";
 }
 
 // Cette fonction est utilisée pour fermer une modal ouverte.
@@ -403,7 +402,9 @@ const imgInput = document.querySelector('input[type="file"]');
  */
 myForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  verify();
+  if (verify()) {
+    return;
+  }
 
   const lastId = await getMaxId();
   const newId = lastId + 1;
@@ -446,6 +447,11 @@ myForm.addEventListener("submit", async (event) => {
       console.error("Erreur lors de l'envoi de la requête:", error);
     });
 });
+
+/**
+ * cette fonction permet de verifier si les champ sont vide envoi un message d'erreur
+ * @returns
+ */
 function verify() {
   const inputImg = document.getElementById("file");
   const inputTitre = document.getElementById("titre");
