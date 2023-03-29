@@ -244,7 +244,7 @@ function openModal(e) {
   target.removeAttribute("aria-hidden"); // On supprime l'attribut "aria-hidden" pour indiquer que la modal est visible.
 
   target.querySelector(".js-modal-close").addEventListener("click", () => {
-    closeModal(modal, target);
+    closeModal(target);
   });
 }
 
