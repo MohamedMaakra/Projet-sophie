@@ -399,15 +399,15 @@ const getMaxId = async () => {
 //POST //
 
 const myForm = document.querySelector("form");
-const categorySelect = document.querySelector("#modal-cat");
-const titleInput = document.querySelector('input[type="text"]');
-const imgInput = document.querySelector('input[type="file"]');
 
 /**
    * Cette fonction écoute la soumission du formulaire et envoie une requête POST contenant les données saisies dans le formulaire, y compris un fichier image, pour créer un nouvel élément de la galerie.
    
    */
 myForm.addEventListener("submit", async (event) => {
+  const categorySelect = document.querySelector("#modal-cat");
+  const titleInput = document.querySelector('input[type="text"]');
+  const imgInput = document.querySelector('input[type="file"]');
   event.preventDefault();
   if (verify()) {
     return;
