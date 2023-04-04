@@ -236,7 +236,7 @@ back.addEventListener("click", () => {
 // Cette fonction est utilisée pour ouvrir une modal lorsqu'un lien est cliqué.
 const openModal = function (e, data) {
   e.preventDefault();
-  const target = document.querySelector(e.target.getAttribute("href"));
+  const target = document.getElementById("modal1");
   target.style.display = null;
   target.removeAttribute("aria-hidden"); // On supprime l'attribut "aria-hidden" pour indiquer que la modal est visible.
   modal = target;
@@ -402,7 +402,7 @@ const imgInput = document.querySelector('input[type="file"]');
  */
 myForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  if (verify()) {
+  if (!verify()) {
     return;
   }
 
