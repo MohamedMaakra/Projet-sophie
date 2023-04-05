@@ -402,7 +402,7 @@ const imgInput = document.querySelector('input[type="file"]');
  */
 myForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  if (!verify()) {
+  if (verify()) {
     return;
   }
 
