@@ -402,8 +402,8 @@ const imgInput = document.querySelector('input[type="file"]');
  */
 myForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  if (verify()) {
-    return;
+  if (!verify()) {
+    return false;
   }
 
   const lastId = await getMaxId();
