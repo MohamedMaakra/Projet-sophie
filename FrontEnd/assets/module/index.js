@@ -465,4 +465,5 @@ function verify() {
 
     return false;
   }
+  return true;
 }
